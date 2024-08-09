@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <script src="js/all.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- main style.css -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <title>Prayer Time</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="setting">
+        <i class="fa-solid fa-gear"></i>
+      </div>
+      <div class="adhan">
+        <div class="actual-time">
+          <span class="hours">00</span>:<span class="minutes">00</span>:<span
+            class="seconds"
+            >00</span
+          >
+          <div class="current-prayer">{{ Fajr }}</div>
+          <div class="time-left">
+            <span class="hours">00</span>:<span class="minutes">00</span>:<span
+              class="seconds"
+              >00</span
+            >
+          </div>
+        </div>
+        <div class="prayer-times">
+          <div class="prayer">prayer 1</div>
+          <div class="prayer">prayer 2</div>
+          <div class="prayer">prayer 3</div>
+          <div class="prayer">prayer 4</div>
+          <div class="prayer">prayer 5</div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <!-- main script -->
+  <script src="./js/script.js"></script>
+</html>
