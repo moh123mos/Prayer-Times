@@ -1,2 +1,2 @@
 # Prayer-Times
-### build prayer times app by using [html , scss , js , bootstrap , API ] 
+### build prayer times app by using [html , scss , js , bootstrap , axios ] 
