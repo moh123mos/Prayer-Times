@@ -9,36 +9,260 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
     <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- axios -->
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <!-- google fonts <Roboto> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap"
+      rel="stylesheet"
+    />
     <!-- main style.css -->
     <link rel="stylesheet" href="css/style.css" />
-
-    <title>Prayer Time</title>
+    <link rel="shortcut icon" href="./favicon.png" type="image/x-icon" />
+    <title>Prayer Times</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap");
+      *,
+      p {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        scroll-behavior: smooth;
+        font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+          "Helvetica Neue", sans-serif;
+      }
+      #app {
+        height: 100vh;
+        background-image: linear-gradient(#00000075, #00000075),
+          url(../imgs/07.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .container {
+        position: relative;
+        display: flex;
+        color: #fff;
+        flex-wrap: wrap;
+        justify-content: center;
+        height: 100vh;
+        padding: 20px;
+        .dates {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          font-size: 18px;
+          font-weight: bold;
+        }
+        .center-screen {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: flex-start;
+          .actual-time {
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: 0 0 4px rgb(0, 0, 0, 0.3);
+            .period {
+              display: block;
+              float: right;
+            }
+            .lg {
+              font-size: 50px;
+            }
+          }
+          .ayah,
+          .prayer-times {
+            width: fit-content;
+            text-align: center;
+            background-color: #656565;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+          }
+          .ayah {
+            font-size: 1rem;
+            .text {
+              font-family: AmiriQuran, sans-serif;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 10px;
+              .ayah-text {
+                font-size: 25px;
+              }
+              .copy-ayah {
+                cursor: pointer;
+                font-size: 16px;
+              }
+            }
+          }
+          .prayer-times {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            color: #ffffffa9;
+            text-transform: capitalize;
+            font-weight: bold;
+            overflow: hidden;
+            .mosque-icon {
+              font-size: 30px;
+            }
+            .prayer {
+              position: relative;
+              &::before,
+              &::after {
+                display: none;
+                content: "";
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                height: 2px;
+              }
+              &::before {
+                width: 80%;
+                background-color: #b2ff59;
+                z-index: 2;
+              }
+              &::after {
+                width: 100%;
+                background-color: #a3a3a3;
+              }
+              .prayer-data {
+                transition: 0.3s;
+              }
+              .prayer-remaining {
+                font-size: 14px;
+                position: absolute;
+                color: #b2ff59;
+                transform: translateY(-300px);
+                margin: 0 -15px;
+                transition: 0.3s;
+              }
+              &.current {
+                &::before,
+                &::after {
+                  display: block;
+                }
+                &:hover {
+                  .prayer-data {
+                    transform: translateY(400px);
+                  }
+                  .prayer-remaining {
+                    transform: translateY(-42px);
+                  }
+                }
+              }
+            }
+          }
+        }
+        .setting-container {
+          position: absolute;
+          bottom: 20px;
+          left: 0;
+          .set-icon {
+            cursor: pointer;
+            font-size: 25px;
+          }
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <div class="setting">
-        <i class="fa-solid fa-gear"></i>
-      </div>
-      <div class="adhan">
-        <div class="actual-time">
-          <span class="hours">00</span>:<span class="minutes">00</span>:<span
-            class="seconds"
-            >00</span
-          >
-          <div class="current-prayer">{{ Fajr }}</div>
-          <div class="time-left">
-            <span class="hours">00</span>:<span class="minutes">00</span>:<span
-              class="seconds"
-              >00</span
-            >
+    <div id="app">
+      <div class="container">
+        <div class="dates">
+          <div class="header-section">
+            <p class="gregorian-date">August 10, 2024</p>
+          </div>
+          <div class="header-section">
+            <p class="hijri-date">Safar 6, 1446 AH</p>
           </div>
         </div>
-        <div class="prayer-times">
-          <div class="prayer">prayer 1</div>
-          <div class="prayer">prayer 2</div>
-          <div class="prayer">prayer 3</div>
-          <div class="prayer">prayer 4</div>
-          <div class="prayer">prayer 5</div>
+        <div class="center-screen">
+          <div class="actual-time">
+            <span class="period">AM</span>
+            <span class="hours lg">00</span>:<span class="minutes lg">00</span
+            >:<span class="seconds">00</span>
+          </div>
+          <div class="ayah">
+            <div class="text">
+              <i class="fa-regular copy-ayah fa-copy"></i>
+              <p class="ayah-text">بسم الله الرحمن الرحيم</p>
+            </div>
+            <div class="surah">سورة الفاتحة (1:7)</div>
+          </div>
+          <div class="prayer-times">
+            <i class="fa-solid mosque-icon fa-mosque"></i>
+            <div class="prayer current">
+              <div class="prayer-data">
+                <p>Fajr</p>
+                <p>00:00</p>
+              </div>
+              <div class="prayer-remaining">
+                <p>remaining</p>
+                <p>00:00</p>
+              </div>
+            </div>
+            <div class="prayer">
+              <div class="prayer-data">
+                <p>Fajr</p>
+                <p>00:00</p>
+              </div>
+              <div class="prayer-remaining">
+                <p>remaining</p>
+                <p>00:00</p>
+              </div>
+            </div>
+            <div class="prayer">
+              <div class="prayer-data">
+                <p>Fajr</p>
+                <p>00:00</p>
+              </div>
+              <div class="prayer-remaining">
+                <p>remaining</p>
+                <p>00:00</p>
+              </div>
+            </div>
+            <div class="prayer">
+              <div class="prayer-data">
+                <p>Fajr</p>
+                <p>00:00</p>
+              </div>
+              <div class="prayer-remaining">
+                <p>remaining</p>
+                <p>00:00</p>
+              </div>
+            </div>
+            <div class="prayer">
+              <div class="prayer-data">
+                <p>Fajr</p>
+                <p>00:00</p>
+              </div>
+              <div class="prayer-remaining">
+                <p>remaining</p>
+                <p>00:00</p>
+              </div>
+            </div>
+            <div class="prayer">
+              <div class="prayer-data">
+                <p>Fajr</p>
+                <p>00:00</p>
+              </div>
+              <div class="prayer-remaining">
+                <p>remaining</p>
+                <p>00:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="setting-container">
+          <i class="set-icon fa-solid fa-gear"></i>
         </div>
       </div>
     </div>
