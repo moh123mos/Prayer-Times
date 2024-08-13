@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
     <script src="js/bootstrap.bundle.min.js"></script>
     <!-- axios -->
-    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <!-- <script src="node_modules/axios/dist/axios.min.js"></script> -->
     <script src="js/axios.min.js"></script>
     <!-- google fonts <Roboto> -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,325 +21,8 @@
     />
     <link rel="shortcut icon" href="./favicon.png" type="image/x-icon" />
     <!-- main style.css -->
-    <!-- <link rel="stylesheet" href="css/style.css" /> -->
+    <link rel="stylesheet" href="css/style.css" />
     <title>Prayer Times</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap");
-      :where(*),
-      p,
-      ul {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-      }
-      body {
-        scroll-behavior: smooth;
-        font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-          "Helvetica Neue", sans-serif;
-      }
-      #app {
-        height: 100vh;
-        /* background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg); */
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-      .container {
-        position: relative;
-        display: flex;
-        color: #fff;
-        flex-wrap: wrap;
-        justify-content: center;
-        height: 100vh;
-        padding: 20px;
-        .dates {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          font-size: 18px;
-          font-weight: bold;
-        }
-        .center-screen {
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          justify-content: flex-start;
-          .actual-time {
-            font-size: 22px;
-            font-weight: bold;
-            text-shadow: 0 0 4px rgb(0, 0, 0, 0.3);
-            .period {
-              display: block;
-              float: right;
-            }
-            .lg {
-              font-size: 50px;
-            }
-            .seconds {
-              color: #dddbdbc3;
-            }
-          }
-          .ayah,
-          .prayer-times {
-            width: fit-content;
-            text-align: center;
-            background-color: rgb(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 10px 30px;
-            margin-bottom: 20px;
-          }
-          .ayah {
-            font-size: 1rem;
-            .text {
-              font-family: AmiriQuran, sans-serif;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              gap: 10px;
-              .ayah-text {
-                letter-spacing: 0.5px;
-                line-height: 2;
-                font-size: 18px;
-                margin-bottom: 5px;
-              }
-              .copy-ayah {
-                cursor: pointer;
-                font-size: 16px;
-                border-radius: 5px;
-                padding: 4px 10px;
-                &:hover {
-                  background-color: #adabab91;
-                }
-              }
-            }
-          }
-          .prayer-times {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 10px 40px;
-            color: #ffffffa9;
-            text-transform: capitalize;
-            font-weight: bold;
-            overflow: hidden;
-            .mosque-icon {
-              font-size: 35px;
-            }
-            .prayer {
-              position: relative;
-              overflow: hidden;
-              width: 85px;
-              span.before,
-              &::after {
-                display: none;
-                content: "";
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                height: 2px;
-              }
-              span.before {
-                display: block;
-                width: var(--dynamic-width);
-                background-color: #0d6efd;
-                z-index: 2;
-                box-shadow: 0px 0px 3px #0d6efd;
-              }
-              &::after {
-                width: 100%;
-                background-color: #a3a3a3;
-              }
-              .prayer-data {
-                transition: 0.3s;
-              }
-              .prayer-remaining {
-                font-size: 15px;
-                position: absolute;
-                color: #0d6efd;
-                transform: translateY(-100px);
-                transition: 0.3s;
-              }
-              &.current {
-                --dynamic-width: 0%;
-                margin-left: -25px;
-                margin-right: -25px;
-                padding-bottom: 5px;
-                span.before,
-                &::after {
-                  display: block;
-                }
-                &:hover {
-                  .prayer-data {
-                    transform: translateY(100px);
-                  }
-                  .prayer-remaining {
-                    p {
-                      margin-bottom: 2px;
-                    }
-                    transform: translateY(-45px);
-                  }
-                }
-              }
-            }
-          }
-        }
-        .setting-container {
-          .set-icon {
-            position: absolute;
-            bottom: 1%;
-            left: 13%;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            z-index: 5;
-            &:hover {
-              background-color: #adabab91;
-            }
-          }
-          #later {
-            position: absolute;
-            bottom: 35px;
-            left: 10%;
-            z-index: 5;
-            width: 400px;
-            height: 300px;
-            border-radius: 20px;
-            background-color: #2d3748f0;
-            padding: 10px 5px;
-            font-size: 12px;
-            .nav-setting {
-              padding-top: 20px;
-              margin-top: -10px;
-              position: absolute;
-              height: 100%;
-              width: 120px;
-              list-style: none;
-              border-right: 1px solid #adabab91;
-              text-transform: capitalize;
-              > li {
-                text-align: center;
-                border-radius: 5px;
-                margin-bottom: 20px;
-                cursor: pointer;
-                padding: 10px 4px 10px 0;
-                &:hover,
-                &.active {
-                  background-color: #adabab91;
-                }
-              }
-            }
-            .main-setting {
-              width: calc(100% - 140px);
-              margin-left: 130px;
-              .setting {
-                position: relative;
-                font-size: 13px;
-                text-transform: capitalize;
-                padding: 10px;
-                &:not(:last-child) {
-                  /* margin-bottom: 10px;*/
-                  border-bottom: 1px solid #adabab91;
-                }
-                select {
-                  width: 90%;
-                  height: 30px;
-                  display: block;
-                  margin: 5px auto 0;
-                  border-radius: 5px;
-                  background-color: transparent;
-                  color: #fff;
-                  border-color: #fff;
-                  -webkit-appearance: none;
-                  -moz-appearance: none;
-                  appearance: none;
-                  text-indent: 5px; /*push the content a bit to right */
-                  &:focus {
-                    outline: none;
-                    box-shadow: 0 0px 3px 2px #2684ff;
-                  }
-                  option {
-                    background-color: #2d3748f0;
-                  }
-                }
-                .icon-up {
-                  color: #a3a3a3;
-                  position: absolute;
-                  right: 30px;
-                  bottom: 17px;
-                  transition: 0.3s;
-                  &:hover {
-                    color: #fff;
-                  }
-                }
-                .separator {
-                  position: absolute;
-                  right: 50px;
-                  bottom: 16px;
-                  width: 1px;
-                  height: 18px;
-                  background-color: #fff;
-                }
-                .form-switch {
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                }
-                input[type="color"] {
-                  border-color: #464c56;
-                  border-width: 3px;
-                  border-radius: 3px;
-                  width: 35px;
-                  height: 20px;
-                }
-              }
-            }
-          }
-        }
-      }
-      @media screen and (max-width: 767px) {
-        #app {
-          height: 110vh;
-        }
-        #later {
-          bottom: 50px !important;
-          left: 2% !important;
-          width: 400px !important;
-          height: 260px !important;
-        }
-        .set-icon {
-          bottom: 5px !important;
-          left: 5% !important;
-          font-size: 20px !important;
-        }
-      }
-      .layer {
-        position: absolute;
-        right: 0;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 2;
-        background-color: transparent;
-      }
-      .alert {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 5px 10px;
-        background-color: #0d6efd9c;
-        transition: 0.3s;
-        color: #fff;
-      }
-      .get-location {
-        opacity: 0.6;
-        transition: 0.3s !important;
-        &:hover {
-          opacity: 0.8 !important;
-        }
-      }
-    </style>
   </head>
   <body>
     <div id="app">
@@ -573,6 +256,22 @@
     let minutesTime = document.querySelector(".actual-time .minutes");
     let secondsTime = document.querySelector(".actual-time .seconds");
     let periodTime = document.querySelector(".actual-time .period");
+    let bgShow = document.querySelector(
+      ".main-setting #bg-setting .setting input#show-bg "
+    );
+    let bgRandom = document.querySelector(
+      ".main-setting #bg-setting .setting input#random "
+    );
+    let bgNext = document.querySelector(
+      ".main-setting #bg-setting .setting .icon-rotate"
+    );
+    let bgBlur = document.querySelector(
+      ".main-setting #bg-setting .setting input#blur"
+    );
+    let bgColor = document.querySelector(
+      ".main-setting #bg-setting .setting input#bg-color"
+    );
+
     function setTime() {
       // let actualTime = document.querySelector(".actual-time ");
       let time = new Date().toLocaleTimeString("en-US", {
@@ -620,21 +319,6 @@
         settings[i].classList.remove("d-none");
       });
     });
-    let bgShow = document.querySelector(
-      ".main-setting #bg-setting .setting input#show-bg "
-    );
-    let bgRandom = document.querySelector(
-      ".main-setting #bg-setting .setting input#random "
-    );
-    let bgNext = document.querySelector(
-      ".main-setting #bg-setting .setting .icon-rotate"
-    );
-    let bgBlur = document.querySelector(
-      ".main-setting #bg-setting .setting input#blur"
-    );
-    let bgColor = document.querySelector(
-      ".main-setting #bg-setting .setting input#bg-color"
-    );
     // console.log(bgShow);
     function setShowBackground() {
       if (bgShow.checked) {

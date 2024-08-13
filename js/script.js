@@ -9,6 +9,7 @@ let countries = [];
 let cities = [];
 let methods = [];
 let prayersContainer = document.querySelector(".prayer-times");
+let ayahContainer = document.querySelector(".ayah");
 let ayahText = document.querySelector(".ayah .ayah-text");
 let surahText = document.querySelector(".ayah .surah");
 let copyBtn = document.querySelector(".copy-ayah");
@@ -18,8 +19,6 @@ let citySelect = document.querySelector("#prayer-setting .setting #city");
 let methodsSelect = document.querySelector("#prayer-setting .setting #methods");
 let prayerData = document.querySelectorAll(".prayer-data");
 let prayersName = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
-let latitude;
-let longitude;
 
 function copyAyah() {
   navigator.clipboard.writeText(`${ayahText.innerHTML}
@@ -30,7 +29,7 @@ ${document.querySelector(".ayah .surah").innerHTML}`);
   }, 1000);
 }
 function getAyah() {
-  document.querySelector(".ayah").style.display = "none";
+  ayahContainer.style.display = "none";
   let rand = Math.floor(1 + Math.random() * 6236);
   axios
     .get(`${url.urlAyah}${rand}`)
@@ -131,89 +130,51 @@ function getPrayerTimes() {
 }
 function addTimesInDOM(timingsOfPrayers) {
   let falg = true;
-  setInterval(() => {
-    prayerData.forEach((e, i) => {
-      let str = timingsOfPrayers[prayersName[i]].slice(0, 5);
-      let currentPrayerHours = parseInt(str.slice(0, 2));
-      let currentPrayerMinutes = parseInt(str.slice(3));
-      let currentPrayerTimeInMinutes =
-        currentPrayerHours * 60 + currentPrayerMinutes;
-      let actaulHour =  new Date().getHours();
-      let actaulMinute = new Date().getMinutes();
-      let actualTimeInMinutes = actaulHour * 60 + actaulMinute;
-      let period =
-        currentPrayerHours < 12
-          ? " AM"
-          : currentPrayerHours == 24
-          ? " AM"
-          : currentPrayerHours > 12
-          ? " PM"
-          : " PM";
-      let time =
-        (currentPrayerHours % 12 < 10
-          ? "0" + (currentPrayerHours % 12)
-          : currentPrayerHours % 12) + str.slice(2);
-      e.innerHTML = `<p>${prayersName[i]}</p>
+  prayerData.forEach((e, i) => {
+    let str = timingsOfPrayers[prayersName[i]].slice(0, 5);
+    let currentPrayerHours = parseInt(str.slice(0, 2));
+    let currentPrayerMinutes = parseInt(str.slice(3));
+    let currentPrayerTimeInMinutes =
+      currentPrayerHours * 60 + currentPrayerMinutes;
+    let actaulHour = new Date().getHours();
+    let actaulMinute = new Date().getMinutes();
+    let actualTimeInMinutes = actaulHour * 60 + actaulMinute;
+    let period =
+      currentPrayerHours < 12
+        ? " AM"
+        : currentPrayerHours == 24
+        ? " AM"
+        : currentPrayerHours > 12
+        ? " PM"
+        : " PM";
+    let time =
+      (currentPrayerHours % 12 < 10
+        ? "0" + (currentPrayerHours % 12)
+        : currentPrayerHours % 12) + str.slice(2);
+    e.innerHTML = `<p>${prayersName[i]}</p>
       <p>${time + period} </p>`;
-      // to choose only first prayer greater than actual Time to be current prayer
-      if (currentPrayerTimeInMinutes > actualTimeInMinutes && falg) {
-        e.parentElement.classList.add("current");
-        setRemainingTime(timingsOfPrayers, i);
-        // remaining time of prayer in minutes
-        // let remainTime =
-        //   currentPrayerHours * 60 +
-        //   currentPrayerMinutes -
-        //   (actaulHour * 60 + actaulMinute);
-
-        // let idx;
-        // if (i == 0) idx = 5;
-        // else idx = i - 1;
-
-        // let fullTime = Math.abs(
-        //   currentPrayerHours * 60 +
-        //     currentPrayerMinutes -
-        //     (parseInt(timingsOfPrayers[prayersName[idx]].slice(0, 2)) * 60 +
-        //       parseInt(timingsOfPrayers[prayersName[idx]].slice(3)))
-        // );
-
-        // // set Line progress according to Remaining Time
-        // let remainLine = document.querySelector(".prayer.current span.before");
-        // remainLine.style.setProperty(
-        //   "--dynamic-width",
-        //   `${(remainTime / fullTime) * 100}%`
-        // );
-        // if (remainTime < 20) {
-        //   remainLine.style.setProperty("background-color", `#f90332`);
-        // }
-
-        // // set remaing time in 'prayer-remaining' section
-        // let remain = document.querySelector(
-        //   ".prayer.current .prayer-remaining"
-        // );
-        // remain.innerHTML = `<p>remaining</p>
-        //           <p>${
-        //             parseInt(remainTime / 60) < 10
-        //               ? "0" + parseInt(remainTime / 60)
-        //               : parseInt(remainTime / 60)
-        //           }:${
-        //   remainTime % 60 < 10 ? "0" + (remainTime % 60) : remainTime % 60
-        // }</p>`;
-        falg = false;
-      }
-    });
-    // if (falg) {
-    //   prayerData[0].parentElement.classList.add("current");
-    // }
-  }, 1000);
+    // to choose only first prayer greater than actual Time to be current prayer
+    if (currentPrayerTimeInMinutes > actualTimeInMinutes && falg) {
+      e.parentElement.classList.add("current");
+      setRemainingTime(timingsOfPrayers, i);
+      falg = false;
+    }
+  });
+  // in case that falg not change then fajr is current
+  if (falg) {
+    prayerData[0].parentElement.classList.add("current");
+    setRemainingTime(timingsOfPrayers, 0);
+  }
 }
 function setRemainingTime(data, i) {
   let str = data[prayersName[i]].slice(0, 5);
   let currentPrayerHours = parseInt(str.slice(0, 2));
   let currentPrayerMinutes = parseInt(str.slice(3));
-  let actaulHour =  new Date().getHours();
+  let actaulHour = new Date().getHours();
   let actaulMinute = new Date().getMinutes();
-
-  // remaining time of prayer in minutes
+  // handel fajr remaining time
+  if (i == 0 && actaulHour > 12) currentPrayerHours = currentPrayerHours + 24;
+  // rem aining time of prayer in minutes
   let remainTime = Math.abs(
     currentPrayerHours * 60 +
       currentPrayerMinutes -
@@ -255,9 +216,6 @@ function setRemainingTime(data, i) {
 
 function setMethod() {
   userData.method = methodsSelect.value;
-  methodsSelect.selectedIndex = methods.findIndex((e) => {
-    return e.id == userData.method;
-  });
   getPrayerTimes();
   localStorage.setItem("userData", JSON.stringify(userData));
 }
