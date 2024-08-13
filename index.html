@@ -11,6 +11,7 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <!-- axios -->
     <script src="node_modules/axios/dist/axios.min.js"></script>
+    <script src="js/axios.min.js"></script>
     <!-- google fonts <Roboto> -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,8 +39,7 @@
       }
       #app {
         height: 100vh;
-        background-image: linear-gradient(#00000075, #00000075),
-          url(./imgs/07.jpg);
+        /* background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg); */
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -128,7 +128,8 @@
             .prayer {
               position: relative;
               overflow: hidden;
-              &::before,
+              width: 85px;
+              span.before,
               &::after {
                 display: none;
                 content: "";
@@ -137,7 +138,8 @@
                 left: 0;
                 height: 2px;
               }
-              &::before {
+              span.before {
+                display: block;
                 width: var(--dynamic-width);
                 background-color: #0d6efd;
                 z-index: 2;
@@ -159,11 +161,10 @@
               }
               &.current {
                 --dynamic-width: 0%;
-                width: 85px;
                 margin-left: -25px;
                 margin-right: -25px;
                 padding-bottom: 5px;
-                &::before,
+                span.before,
                 &::after {
                   display: block;
                 }
@@ -372,26 +373,32 @@
             <div class="prayer">
               <div class="prayer-data"></div>
               <div class="prayer-remaining"></div>
+              <span class="before"></span>
             </div>
             <div class="prayer">
               <div class="prayer-data"></div>
               <div class="prayer-remaining"></div>
+              <span class="before"></span>
             </div>
             <div class="prayer">
               <div class="prayer-data"></div>
               <div class="prayer-remaining"></div>
+              <span class="before"></span>
             </div>
             <div class="prayer">
               <div class="prayer-data"></div>
               <div class="prayer-remaining"></div>
+              <span class="before"></span>
             </div>
             <div class="prayer">
               <div class="prayer-data"></div>
               <div class="prayer-remaining"></div>
+              <span class="before"></span>
             </div>
             <div class="prayer">
               <div class="prayer-data"></div>
               <div class="prayer-remaining"></div>
+              <span class="before"></span>
             </div>
           </div>
         </div>
@@ -401,7 +408,7 @@
             <ul class="nav-setting">
               <li class="prayer-setting">prayer settings</li>
               <li class="ayah-setting">Ayah settings</li>
-              <li class="bc-setting">background settings</li>
+              <li class="bg-setting">background settings</li>
             </ul>
             <div class="main-setting">
               <div class="d-none" id="prayer-setting">
@@ -471,17 +478,19 @@
                   </div>
                 </div>
               </div>
-              <div class="d-none" id="bc-setting">
+              <div class="d-none" id="bg-setting">
                 <div class="setting">
-                  <div class="show-bc form-switch p-0">
-                    <label class="form-check-label" for="show-bc"
+                  <div class="show-bg form-switch p-0">
+                    <label class="form-check-label" for="show-bg"
                       >show background</label
                     >
                     <input
+                      onchange="setShowBackground()"
                       class="form-check-input ms-5"
                       type="checkbox"
                       role="switch"
-                      id="show-bc"
+                      id="show-bg"
+                      checked
                     />
                   </div>
                 </div>
@@ -499,23 +508,9 @@
                   </div>
                 </div>
                 <div class="setting">
-                  <div class="bc-next form-switch p-0">
-                    <label class="bc-next-label">Load New Background</label>
+                  <div class="bg-next form-switch p-0">
+                    <label class="bg-next-label">Load New Background</label>
                     <i class="fa-solid fa-rotate icon-rotate"></i>
-                  </div>
-                </div>
-                <div class="setting">
-                  <div class="bc-color form-switch p-0">
-                    <label class="form-check-label" for="bc-color"
-                      >Selected Solid Color</label
-                    >
-
-                    <input
-                      class="form-check-input ms-5"
-                      type="color"
-                      role="switch"
-                      id="bc-color"
-                    />
                   </div>
                 </div>
                 <div class="setting">
@@ -531,6 +526,21 @@
                     />
                   </div>
                 </div>
+                <div class="setting">
+                  <div class="bg-color form-switch p-0">
+                    <label class="form-check-label" for="bg-color"
+                      >Selected Solid Color</label
+                    >
+
+                    <input
+                      class="form-check-input ms-5"
+                      type="color"
+                      role="switch"
+                      id="bg-color"
+                      onchange="setShowBackground()"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -543,8 +553,19 @@
 
   <!-- main script -->
   <script>
+    let userData = {
+      country: "",
+      city: "",
+      method: "",
+      isBgImg: true,
+      bgImg: "",
+      bgBlur: false,
+      bgAutoChange: false,
+      bgColor: "",
+    };
     let setIcon = document.querySelector(".set-icon");
     let later = document.querySelector("#later");
+    let app = document.querySelector("#app");
     let layer = document.querySelector(".layer");
     let settings = document.querySelectorAll(".main-setting>div");
     let navSettings = document.querySelectorAll(".nav-setting li");
@@ -599,10 +620,46 @@
         settings[i].classList.remove("d-none");
       });
     });
-
+    let bgShow = document.querySelector(
+      ".main-setting #bg-setting .setting input#show-bg "
+    );
+    let bgRandom = document.querySelector(
+      ".main-setting #bg-setting .setting input#random "
+    );
+    let bgNext = document.querySelector(
+      ".main-setting #bg-setting .setting .icon-rotate"
+    );
+    let bgBlur = document.querySelector(
+      ".main-setting #bg-setting .setting input#blur"
+    );
+    let bgColor = document.querySelector(
+      ".main-setting #bg-setting .setting input#bg-color"
+    );
+    // console.log(bgShow);
+    function setShowBackground() {
+      if (bgShow.checked) {
+        bgRandom.disabled = false;
+        bgBlur.disabled = false;
+        bgColor.disabled = true;
+        app.setAttribute(
+          "style",
+          "background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg);"
+        );
+      } else {
+        bgRandom.disabled = true;
+        bgBlur.disabled = true;
+        bgColor.disabled = false;
+        app.setAttribute(
+          "style",
+          `background-color:${bgColor.value} !important;`
+        );
+      }
+    }
     // fire EL functoins :)
     setDate();
     setInterval(setTime, 1000);
+    setShowBackground();
+    // setBackground();
   </script>
   <script src="./js/script.js"></script>
 </html>
