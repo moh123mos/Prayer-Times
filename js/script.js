@@ -41,7 +41,6 @@ function getAyah() {
     })
     .catch((err) => {
       console.error(err);
-      location.reload();
     });
 }
 
