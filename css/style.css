@@ -135,8 +135,8 @@ body {
         }
         &.current {
           --dynamic-width: 0%;
-          margin-left: -25px;
-          margin-right: -25px;
+          /* margin-left: -25px;
+          margin-right: -25px; */
           padding-bottom: 5px;
           span.before,
           &::after {
@@ -273,7 +273,7 @@ body {
 }
 @media screen and (max-width: 767px) {
   #app {
-    height: 110vh;
+    /* height: 110vh; */
   }
   #later {
     bottom: 50px !important;
