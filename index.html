@@ -18,14 +18,15 @@
       href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap"
       rel="stylesheet"
     />
-    <!-- main style.css -->
-    <link rel="stylesheet" href="css/style.css" />
     <link rel="shortcut icon" href="./favicon.png" type="image/x-icon" />
+    <!-- main style.css -->
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
     <title>Prayer Times</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap");
-      *,
-      p {
+      :where(*),
+      p,
+      ul {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
@@ -38,7 +39,7 @@
       #app {
         height: 100vh;
         background-image: linear-gradient(#00000075, #00000075),
-          url(../imgs/07.jpg);
+          url(./imgs/07.jpg);
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -73,14 +74,17 @@
             .lg {
               font-size: 50px;
             }
+            .seconds {
+              color: #dddbdbc3;
+            }
           }
           .ayah,
           .prayer-times {
             width: fit-content;
             text-align: center;
-            background-color: #656565;
+            background-color: rgb(0, 0, 0, 0.6);
             border-radius: 10px;
-            padding: 10px 20px;
+            padding: 10px 30px;
             margin-bottom: 20px;
           }
           .ayah {
@@ -92,11 +96,19 @@
               align-items: center;
               gap: 10px;
               .ayah-text {
-                font-size: 25px;
+                letter-spacing: 0.5px;
+                line-height: 2;
+                font-size: 18px;
+                margin-bottom: 5px;
               }
               .copy-ayah {
                 cursor: pointer;
                 font-size: 16px;
+                border-radius: 5px;
+                padding: 4px 10px;
+                &:hover {
+                  background-color: #adabab91;
+                }
               }
             }
           }
@@ -105,29 +117,31 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 10px 40px;
             color: #ffffffa9;
             text-transform: capitalize;
             font-weight: bold;
             overflow: hidden;
             .mosque-icon {
-              font-size: 30px;
+              font-size: 35px;
             }
             .prayer {
               position: relative;
+              overflow: hidden;
               &::before,
               &::after {
                 display: none;
                 content: "";
                 position: absolute;
-                bottom: -2px;
+                bottom: 0;
                 left: 0;
                 height: 2px;
               }
               &::before {
-                width: 80%;
-                background-color: #b2ff59;
+                width: var(--dynamic-width);
+                background-color: #0d6efd;
                 z-index: 2;
+                box-shadow: 0px 0px 3px #0d6efd;
               }
               &::after {
                 width: 100%;
@@ -137,24 +151,31 @@
                 transition: 0.3s;
               }
               .prayer-remaining {
-                font-size: 14px;
+                font-size: 15px;
                 position: absolute;
-                color: #b2ff59;
-                transform: translateY(-300px);
-                margin: 0 -15px;
+                color: #0d6efd;
+                transform: translateY(-100px);
                 transition: 0.3s;
               }
               &.current {
+                --dynamic-width: 0%;
+                width: 85px;
+                margin-left: -25px;
+                margin-right: -25px;
+                padding-bottom: 5px;
                 &::before,
                 &::after {
                   display: block;
                 }
                 &:hover {
                   .prayer-data {
-                    transform: translateY(400px);
+                    transform: translateY(100px);
                   }
                   .prayer-remaining {
-                    transform: translateY(-42px);
+                    p {
+                      margin-bottom: 2px;
+                    }
+                    transform: translateY(-45px);
                   }
                 }
               }
@@ -162,13 +183,159 @@
           }
         }
         .setting-container {
-          position: absolute;
-          bottom: 20px;
-          left: 0;
           .set-icon {
+            position: absolute;
+            bottom: 1%;
+            left: 13%;
+            padding: 5px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 25px;
+            font-size: 18px;
+            z-index: 5;
+            &:hover {
+              background-color: #adabab91;
+            }
           }
+          #later {
+            position: absolute;
+            bottom: 35px;
+            left: 10%;
+            z-index: 5;
+            width: 400px;
+            height: 300px;
+            border-radius: 20px;
+            background-color: #2d3748f0;
+            padding: 10px 5px;
+            font-size: 12px;
+            .nav-setting {
+              padding-top: 20px;
+              margin-top: -10px;
+              position: absolute;
+              height: 100%;
+              width: 120px;
+              list-style: none;
+              border-right: 1px solid #adabab91;
+              text-transform: capitalize;
+              > li {
+                text-align: center;
+                border-radius: 5px;
+                margin-bottom: 20px;
+                cursor: pointer;
+                padding: 10px 4px 10px 0;
+                &:hover,
+                &.active {
+                  background-color: #adabab91;
+                }
+              }
+            }
+            .main-setting {
+              width: calc(100% - 140px);
+              margin-left: 130px;
+              .setting {
+                position: relative;
+                font-size: 13px;
+                text-transform: capitalize;
+                padding: 10px;
+                &:not(:last-child) {
+                  /* margin-bottom: 10px;*/
+                  border-bottom: 1px solid #adabab91;
+                }
+                select {
+                  width: 90%;
+                  height: 30px;
+                  display: block;
+                  margin: 5px auto 0;
+                  border-radius: 5px;
+                  background-color: transparent;
+                  color: #fff;
+                  border-color: #fff;
+                  -webkit-appearance: none;
+                  -moz-appearance: none;
+                  appearance: none;
+                  text-indent: 5px; /*push the content a bit to right */
+                  &:focus {
+                    outline: none;
+                    box-shadow: 0 0px 3px 2px #2684ff;
+                  }
+                  option {
+                    background-color: #2d3748f0;
+                  }
+                }
+                .icon-up {
+                  color: #a3a3a3;
+                  position: absolute;
+                  right: 30px;
+                  bottom: 17px;
+                  transition: 0.3s;
+                  &:hover {
+                    color: #fff;
+                  }
+                }
+                .separator {
+                  position: absolute;
+                  right: 50px;
+                  bottom: 16px;
+                  width: 1px;
+                  height: 18px;
+                  background-color: #fff;
+                }
+                .form-switch {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                }
+                input[type="color"] {
+                  border-color: #464c56;
+                  border-width: 3px;
+                  border-radius: 3px;
+                  width: 35px;
+                  height: 20px;
+                }
+              }
+            }
+          }
+        }
+      }
+      @media screen and (max-width: 767px) {
+        #app {
+          height: 110vh;
+        }
+        #later {
+          bottom: 50px !important;
+          left: 2% !important;
+          width: 400px !important;
+          height: 260px !important;
+        }
+        .set-icon {
+          bottom: 5px !important;
+          left: 5% !important;
+          font-size: 20px !important;
+        }
+      }
+      .layer {
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 2;
+        background-color: transparent;
+      }
+      .alert {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 5px 10px;
+        background-color: #0d6efd9c;
+        transition: 0.3s;
+        color: #fff;
+      }
+      .get-location {
+        opacity: 0.6;
+        transition: 0.3s !important;
+        &:hover {
+          opacity: 0.8 !important;
         }
       }
     </style>
@@ -186,88 +353,256 @@
         </div>
         <div class="center-screen">
           <div class="actual-time">
-            <span class="period">AM</span>
-            <span class="hours lg">00</span>:<span class="minutes lg">00</span
-            >:<span class="seconds">00</span>
+            <span class="period"></span>
+            <span class="hours lg"></span><span class="minutes lg"></span
+            ><span class="seconds"></span>
           </div>
           <div class="ayah">
             <div class="text">
-              <i class="fa-regular copy-ayah fa-copy"></i>
-              <p class="ayah-text">بسم الله الرحمن الرحيم</p>
+              <i onclick="copyAyah()" class="fa-regular copy-ayah fa-copy"></i>
+              <p class="ayah-text"></p>
             </div>
-            <div class="surah">سورة الفاتحة (1:7)</div>
+            <div class="surah"></div>
+          </div>
+          <div class="btn btn-primary get-location d-none">
+            Get Your Location
           </div>
           <div class="prayer-times">
             <i class="fa-solid mosque-icon fa-mosque"></i>
-            <div class="prayer current">
-              <div class="prayer-data">
-                <p>Fajr</p>
-                <p>00:00</p>
-              </div>
-              <div class="prayer-remaining">
-                <p>remaining</p>
-                <p>00:00</p>
-              </div>
+            <div class="prayer">
+              <div class="prayer-data"></div>
+              <div class="prayer-remaining"></div>
             </div>
             <div class="prayer">
-              <div class="prayer-data">
-                <p>Fajr</p>
-                <p>00:00</p>
-              </div>
-              <div class="prayer-remaining">
-                <p>remaining</p>
-                <p>00:00</p>
-              </div>
+              <div class="prayer-data"></div>
+              <div class="prayer-remaining"></div>
             </div>
             <div class="prayer">
-              <div class="prayer-data">
-                <p>Fajr</p>
-                <p>00:00</p>
-              </div>
-              <div class="prayer-remaining">
-                <p>remaining</p>
-                <p>00:00</p>
-              </div>
+              <div class="prayer-data"></div>
+              <div class="prayer-remaining"></div>
             </div>
             <div class="prayer">
-              <div class="prayer-data">
-                <p>Fajr</p>
-                <p>00:00</p>
-              </div>
-              <div class="prayer-remaining">
-                <p>remaining</p>
-                <p>00:00</p>
-              </div>
+              <div class="prayer-data"></div>
+              <div class="prayer-remaining"></div>
             </div>
             <div class="prayer">
-              <div class="prayer-data">
-                <p>Fajr</p>
-                <p>00:00</p>
-              </div>
-              <div class="prayer-remaining">
-                <p>remaining</p>
-                <p>00:00</p>
-              </div>
+              <div class="prayer-data"></div>
+              <div class="prayer-remaining"></div>
             </div>
             <div class="prayer">
-              <div class="prayer-data">
-                <p>Fajr</p>
-                <p>00:00</p>
-              </div>
-              <div class="prayer-remaining">
-                <p>remaining</p>
-                <p>00:00</p>
-              </div>
+              <div class="prayer-data"></div>
+              <div class="prayer-remaining"></div>
             </div>
           </div>
         </div>
         <div class="setting-container">
-          <i class="set-icon fa-solid fa-gear"></i>
+          <i onclick="showSetting()" class="set-icon fa-solid fa-gear"></i>
+          <div class="d-none" id="later">
+            <ul class="nav-setting">
+              <li class="prayer-setting">prayer settings</li>
+              <li class="ayah-setting">Ayah settings</li>
+              <li class="bc-setting">background settings</li>
+            </ul>
+            <div class="main-setting">
+              <div class="d-none" id="prayer-setting">
+                <div class="setting">
+                  <label for="country">country:</label>
+                  <select
+                    onchange="getCities()"
+                    class=""
+                    name="country"
+                    id="country"
+                  >
+                    <!-- <option value="any">Select your city</option> -->
+                  </select>
+                  <span class="separator"></span>
+                  <i class="fa-solid fa-angle-up icon-up"></i>
+                </div>
+                <div class="setting">
+                  <label for="city">city:</label>
+                  <select
+                    onchange="getPrayerTimes()"
+                    class=""
+                    name="city"
+                    id="city"
+                  >
+                    <!-- <option value="any">Select your city</option> -->
+                  </select>
+                  <span class="separator"></span>
+                  <i class="fa-solid fa-angle-up icon-up"></i>
+                </div>
+                <div class="setting">
+                  <label for="methods">methods:</label>
+                  <select
+                    onchange="setMethod()"
+                    class=""
+                    name="methods"
+                    id="methods"
+                  ></select>
+                  <span class="separator"></span>
+                  <i class="fa-solid fa-angle-up icon-up"></i>
+                </div>
+              </div>
+              <div class="d-none" id="ayah-setting">
+                <div class="setting">
+                  <div class="show-ayah form-switch p-0">
+                    <label class="form-check-label" for="show-ayah"
+                      >show ayah</label
+                    >
+                    <input
+                      class="form-check-input ms-5"
+                      type="checkbox"
+                      role="switch"
+                      id="show-ayah"
+                    />
+                  </div>
+                </div>
+                <div class="setting">
+                  <div class="random form-switch p-0">
+                    <label class="form-check-label" for="random"
+                      >Random Display</label
+                    >
+                    <input
+                      class="form-check-input ms-5"
+                      type="checkbox"
+                      role="switch"
+                      id="random"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="d-none" id="bc-setting">
+                <div class="setting">
+                  <div class="show-bc form-switch p-0">
+                    <label class="form-check-label" for="show-bc"
+                      >show background</label
+                    >
+                    <input
+                      class="form-check-input ms-5"
+                      type="checkbox"
+                      role="switch"
+                      id="show-bc"
+                    />
+                  </div>
+                </div>
+                <div class="setting">
+                  <div class="random form-switch p-0">
+                    <label class="form-check-label" for="random"
+                      >auto change backround</label
+                    >
+                    <input
+                      class="form-check-input ms-5"
+                      type="checkbox"
+                      role="switch"
+                      id="random"
+                    />
+                  </div>
+                </div>
+                <div class="setting">
+                  <div class="bc-next form-switch p-0">
+                    <label class="bc-next-label">Load New Background</label>
+                    <i class="fa-solid fa-rotate icon-rotate"></i>
+                  </div>
+                </div>
+                <div class="setting">
+                  <div class="bc-color form-switch p-0">
+                    <label class="form-check-label" for="bc-color"
+                      >Selected Solid Color</label
+                    >
+
+                    <input
+                      class="form-check-input ms-5"
+                      type="color"
+                      role="switch"
+                      id="bc-color"
+                    />
+                  </div>
+                </div>
+                <div class="setting">
+                  <div class="blur form-switch p-0">
+                    <label class="form-check-label" for="blur"
+                      >Enable Blur Effect</label
+                    >
+                    <input
+                      class="form-check-input ms-5"
+                      type="checkbox"
+                      role="switch"
+                      id="blur"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <div onclick="showSetting()" class="layer d-none"></div>
+      <div class="alert alert-success opacity-0" role="alert">Copied !</div>
     </div>
   </body>
 
   <!-- main script -->
+  <script>
+    let setIcon = document.querySelector(".set-icon");
+    let later = document.querySelector("#later");
+    let layer = document.querySelector(".layer");
+    let settings = document.querySelectorAll(".main-setting>div");
+    let navSettings = document.querySelectorAll(".nav-setting li");
+    let hoursTime = document.querySelector(".actual-time .hours");
+    let minutesTime = document.querySelector(".actual-time .minutes");
+    let secondsTime = document.querySelector(".actual-time .seconds");
+    let periodTime = document.querySelector(".actual-time .period");
+    function setTime() {
+      // let actualTime = document.querySelector(".actual-time ");
+      let time = new Date().toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      // console.log(minutesTime, secondsTime);
+      hoursTime.innerHTML = time.slice(0, 2);
+      minutesTime.innerHTML = time.slice(2, 5);
+      secondsTime.innerHTML = time.slice(5, 8);
+      periodTime.innerHTML = time.slice(9);
+    }
+    // setTime();
+    function setDate() {
+      let hijriDate = document.querySelector(".dates .hijri-date");
+      let gregorianDate = document.querySelector(".dates .gregorian-date");
+      //set date in page
+      let hijri = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(Date.now());
+      let gregorian = new Intl.DateTimeFormat("default", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(Date.now());
+      hijriDate.innerHTML = hijri;
+      gregorianDate.innerHTML = gregorian;
+    }
+    // fun. to show setting window
+    function showSetting() {
+      later.classList.toggle("d-none");
+      layer.classList.toggle("d-none");
+    }
+    // fun. to show setting section
+    navSettings.forEach((e, i) => {
+      e.addEventListener("click", (e) => {
+        navSettings.forEach((e, j) => {
+          e.classList.remove("active");
+          settings[j].classList.add("d-none");
+        });
+        e.target.classList.add("active");
+        settings[i].classList.remove("d-none");
+      });
+    });
+
+    // fire EL functoins :)
+    setDate();
+    setInterval(setTime, 1000);
+  </script>
   <script src="./js/script.js"></script>
 </html>
