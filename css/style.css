@@ -19,16 +19,20 @@ ul {
 /* Handle */
 *::-webkit-scrollbar-thumb {
   background: #1d2a35;
+  border-radius: 5px;
 }
 
 /* Handle on hover */
 *::-webkit-scrollbar-thumb:hover {
-  background: #141d25;
+  background: #00000099;
 }
 body {
   scroll-behavior: smooth;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
     sans-serif;
+}
+.hide {
+  display: none !important;
 }
 #app {
   height: 100vh;
@@ -39,7 +43,7 @@ body {
   right: 0;
   top: 0;
   bottom: 0;
-  background-image: linear-gradient(#00000075, #00000075), url(./imgs/07.jpg);
+  background-image: linear-gradient(#00000075, #00000075), url(../imgs/07.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   overflow-y: scroll;
@@ -186,7 +190,7 @@ body {
   }
   .setting-container {
     .set-icon {
-      position: absolute;
+      position: fixed;
       bottom: 1%;
       left: 13%;
       padding: 5px;
@@ -200,7 +204,7 @@ body {
       }
     }
     #later {
-      position: absolute;
+      position: fixed;
       bottom: 35px;
       left: 10%;
       z-index: 5;
@@ -293,6 +297,9 @@ body {
             border-radius: 3px;
             width: 35px;
             height: 20px;
+          }
+          .icon-rotate {
+            cursor: pointer;
           }
         }
       }

@@ -8,6 +8,7 @@ let userData = {
   bgAutoChange: false,
   bgColor: "",
 };
+let cur_img = 7;
 let setIcon = document.querySelector(".set-icon");
 let later = document.querySelector("#later");
 let backgroundImg = document.querySelector("#background-img");
@@ -33,7 +34,10 @@ let bgBlur = document.querySelector(
 let bgColor = document.querySelector(
   ".main-setting #bg-setting .setting input#bg-color"
 );
+let ayah = document.querySelector(".ayah");
 
+// save bg img in localStorage
+if (localStorage.getItem("cur_img")) cur_img = localStorage.getItem("cur_img");
 function setTime() {
   // let actualTime = document.querySelector(".actual-time ");
   let time = new Date().toLocaleTimeString("en-US", {
@@ -81,34 +85,51 @@ navSettings.forEach((e, i) => {
     settings[i].classList.remove("d-none");
   });
 });
+let nextBg = true;
 // console.log(bgShow);
 function setShowBackground() {
   if (bgShow.checked) {
-    bgRandom.disabled = false;
+    // bgRandom.disabled = false;
     bgBlur.disabled = false;
+    nextBg = true;
     bgColor.disabled = true;
     backgroundImg.setAttribute(
       "style",
-      "background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg);"
+      `background: linear-gradient(#00000075, #00000075),url(./imgs/0${cur_img}.jpg) no-repeat;background-size: cover;`
     );
     if (bgBlur.checked) {
-      backgroundImg.style="background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg);filter: blur(2px)"
+      backgroundImg.style = `background: linear-gradient(#00000075, #00000075),url(./imgs/0${cur_img}.jpg) no-repeat;background-size: cover;filter: blur(2px)`;
     }
   } else {
-    bgRandom.disabled = true;
+    // bgRandom.disabled = true;
     bgBlur.disabled = true;
+    nextBg = false;
     bgColor.disabled = false;
     backgroundImg.setAttribute(
       "style",
-      `background-color:${bgColor.value} !important;`
+      `background:${bgColor.value} !important;`
     );
   }
 }
+const nextBackground = () => {
+  if (!nextBg) return;
+  // if (localStorage.getItem("cur_img"))
+  //   cur_img = localStorage.getItem("cur_img");
+  console.log(cur_img);
+  cur_img = (cur_img % 7) + 1;
+  backgroundImg.setAttribute(
+    "style",
+    `background: linear-gradient(#00000075, #00000075),url(./imgs/0${cur_img}.jpg) no-repeat;background-size: cover;`
+  );
+  localStorage.setItem("cur_img", cur_img);
+};
+const setShowAyah = () => {
+  ayah.classList.toggle("hide");
+};
 // fire EL functoins :)
 setDate();
 setInterval(setTime, 1000);
 setShowBackground();
-
 /*
 [1] randomize background img
 [2] save it in localStorage

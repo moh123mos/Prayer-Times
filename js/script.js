@@ -42,7 +42,9 @@ function getAyah() {
       console.error(err);
     });
 }
-
+const getRandomAyah = () => {
+  getAyah()
+}
 function getCountries() {
   axios.get(url.coutries).then((data) => {
     countries = data.data.data;
