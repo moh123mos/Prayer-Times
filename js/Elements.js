@@ -10,7 +10,7 @@ let userData = {
 };
 let setIcon = document.querySelector(".set-icon");
 let later = document.querySelector("#later");
-let app = document.querySelector("#app");
+let backgroundImg = document.querySelector("#background-img");
 let layer = document.querySelector(".layer");
 let settings = document.querySelectorAll(".main-setting>div");
 let navSettings = document.querySelectorAll(".nav-setting li");
@@ -87,18 +87,33 @@ function setShowBackground() {
     bgRandom.disabled = false;
     bgBlur.disabled = false;
     bgColor.disabled = true;
-    app.setAttribute(
+    backgroundImg.setAttribute(
       "style",
       "background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg);"
     );
+    if (bgBlur.checked) {
+      backgroundImg.style="background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg);filter: blur(2px)"
+    }
   } else {
     bgRandom.disabled = true;
     bgBlur.disabled = true;
     bgColor.disabled = false;
-    app.setAttribute("style", `background-color:${bgColor.value} !important;`);
+    backgroundImg.setAttribute(
+      "style",
+      `background-color:${bgColor.value} !important;`
+    );
   }
 }
 // fire EL functoins :)
 setDate();
 setInterval(setTime, 1000);
 setShowBackground();
+
+/*
+[1] randomize background img
+[2] save it in localStorage
+[3] make btn to nxt img in case that randomzing no work
+[4] enable blur filter on bgImg (optional)
+[5] show bgColor or not
+[6] show ayah or not
+*/

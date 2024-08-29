@@ -108,12 +108,13 @@ function getMethods() {
   });
 }
 function getPrayerTimes() {
+  // console.time();
   let date = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "numeric",
   });
   date = date.split("/").reverse().join("/");
-
+  
   let todayIdx = new Date().getDate() - 1;
   url.prayerTimes += `${date}?city=${citySelect.value}&country=${countrySelect.value}&method=${methodsSelect.value}`;
   let timingsOfPrayers;
@@ -127,6 +128,7 @@ function getPrayerTimes() {
   userData.country = countrySelect.value;
   // userData.method = methodsSelect.value;
   localStorage.setItem("userData", JSON.stringify(userData));
+  // console.timeEnd();
 }
 function addTimesInDOM(timingsOfPrayers) {
   let falg = true;

@@ -13,7 +13,14 @@ body {
 }
 #app {
   height: 100vh;
-  /* background-image: linear-gradient(#00000075, #00000075),url(./imgs/07.jpg); */
+}
+#background-img {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(#00000075, #00000075), url(./imgs/07.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -167,6 +174,7 @@ body {
       cursor: pointer;
       font-size: 18px;
       z-index: 5;
+      text-shadow: 0 0 3px #000;
       &:hover {
         background-color: #adabab91;
       }
@@ -272,9 +280,6 @@ body {
   }
 }
 @media screen and (max-width: 767px) {
-  #app {
-    /* height: 110vh; */
-  }
   #later {
     bottom: 50px !important;
     left: 2% !important;

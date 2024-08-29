@@ -26,6 +26,7 @@
   </head>
   <body>
     <div id="app">
+      <div id="background-img"></div>
       <div class="container">
         <div class="dates">
           <div class="header-section">
@@ -178,6 +179,7 @@
                       type="checkbox"
                       role="switch"
                       id="blur"
+                      onchange="setShowBackground()"
                     />
                   </div>
                 </div>
@@ -226,7 +228,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>  
           </div>
         </div>
       </div>
